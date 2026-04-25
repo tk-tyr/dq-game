@@ -145,14 +145,18 @@ function doSpell(name) {
     enemy.hp = 0;
     updateBattleUI();
     typeMsg(`${name}！\n${enemy.name}は　いきたえた！`, () => winBattle());
-  } else {
-    const dmg = Math.max(1, s.power - Math.floor(enemy.def / 2) + rand(20));
-    enemy.hp = Math.max(0, enemy.hp - dmg);
-    shakeEnemy();
-    updateBattleUI();
-    typeMsg(`${name}！　${enemy.name}に　${dmg}の　ダメージ！`, () => {
-      enemy.hp <= 0 ? winBattle() : enemyTurn();
-    });
+  } else if (s.type === 'fixed') {
+    const isMetal = enemy.name === 'メタルスライム' || enemy.name === 'メタルキング';
+    if (isMetal) {
+      typeMsg(`${name}！　しかし　${enemy.name}には　きかない！`, () => enemyTurn());
+    } else {
+      enemy.hp = Math.max(0, enemy.hp - s.power);
+      shakeEnemy();
+      updateBattleUI();
+      typeMsg(`${name}！　${enemy.name}に　${s.power}の　ダメージ！`, () => {
+        enemy.hp <= 0 ? winBattle() : enemyTurn();
+      });
+    }
   }
 }
 

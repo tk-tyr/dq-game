@@ -34,10 +34,10 @@ const MONSTERS = {
   'ダースドラゴン':  { lv: 42, hp: 288,  atk: 202, def: 65, exp: 158, gold: 130, emoji: '🔥' },
   'キングサーペント':{ lv: 44, hp: 300,  atk: 210, def: 68, exp: 160, gold: 150, emoji: '🦂', usesPoison: true },
   // メタル系
-  'メタルキング':    { lv: 50, hp: 3,   atk: 100,  def: 450,exp: 1000,gold: 200, emoji: '👑' },
+  'メタルキング':    { lv: 50, hp: 3,   atk: 100,  def: 500,exp: 1500,gold: 400, emoji: '👑' },
   // ボス
-  '魔王ゾーマ':      { lv: 60, hp: 900,  atk: 280, def: 70, exp: 0,   gold: 0,   emoji: '👿', isBoss: true, usesPoison: true },
-  '深淵の魔神':      { lv: 90, hp: 6000, atk: 430, def: 140,exp: 0,   gold: 0,   emoji: '🌑', isBoss: true, isSecretBoss: true, usesPoison: true },
+  '魔王ゾーマ':      { lv: 60, hp: 999,  atk: 280, def: 100, exp: 3000,   gold: 0,   emoji: '👿', isBoss: true, usesPoison: true },
+  '深淵の魔神':      { lv: 90, hp: 9999, atk: 600, def: 200,exp: 0,   gold: 0,   emoji: '🌑', isBoss: true, isSecretBoss: true, usesPoison: true },
 };
 
 const AREAS = [
@@ -68,10 +68,11 @@ const AREAS = [
 ];
 
 const SPELLS = {
-  'ホイミ':   { mp: 4,   type: 'heal',      power: 35, lv: 3,  desc: 'HPを回復（LVで増加）' },
-  'ギラ':     { mp: 6,   type: 'fire',      power: 40, lv: 5,  desc: '炎で攻撃' },
-  'ベギラマ': { mp: 12,  type: 'fire',      power: 90, lv: 10, desc: '強炎で攻撃' },
-  'デス！':   { mp: 450, type: 'instakill', power: 0,  lv: 99, desc: '必中の即死呪文' },
+  'ホイミ':    { mp: 20,   type: 'heal',      power: 35,  lv: 5,  desc: 'HPを回復（LVで増加）' },
+  'メラ':      { mp: 45,  type: 'fixed',     power: 100, lv: 12, desc: 'メタル系以外に固定100ダメージ' },
+  'イオナズン': { mp: 65,  type: 'fixed',     power: 170, lv: 30, desc: 'メタル系以外に固定170ダメージ' },
+  'ギガディン': { mp: 90,  type: 'fixed',     power: 300, lv: 45, desc: 'メタル系以外に固定300ダメージ' },
+  'デス！':    { mp: 450, type: 'instakill', power: 0,   lv: 99, desc: '必中の即死呪文' },
 };
 
 const ITEMS = {

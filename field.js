@@ -115,7 +115,7 @@ function triggerSecretMaxOut() {
     maxOutStatsSecret();
     updateExploreUI();
     setExploreCmds();
-    typeMsg('ゆうしゃは　しんていなる　ちからを\nてにいれた！');
+    typeMsg('ゆうしゃは　しんえんなる　ちからを\nてにいれた！');
   });
 }
 
