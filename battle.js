@@ -222,7 +222,7 @@ function afterEnemyTurn() {
 function enemyTurn() {
   battlePhase = 'enemy';
   if (enemy.name === 'メタルスライム' || enemy.name === 'メタルキング') {
-    const fleeRate = enemy.name === 'メタルキング' ? 0.75 : 0.5;
+    const fleeRate = 0.5;
     if (Math.random() < fleeRate) {
       typeMsg(`${enemy.name}は　にげだした！`, () => {
         enemy = null;
