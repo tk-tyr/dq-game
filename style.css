@@ -201,6 +201,20 @@ body {
 .clear-sub   { color: #aaa; font-size: clamp(0.75em, 3.5vw, 0.85em); }
 #clear-stats { color: #88ffaa; font-size: clamp(0.75em, 3.5vw, 0.85em); line-height: 2.2; }
 
+/* ===== ランク ===== */
+.rank-label   { color: #aaa; font-size: 0.85em; }
+.rank-badge   { font-size: 2em; font-weight: bold; vertical-align: middle; }
+.rank-SS      { color: #fff; text-shadow: 0 0 8px #ff88ff, 0 0 16px #88ffff, 0 0 24px #ffff88; }
+.rank-S       { color: #FFD700; text-shadow: 0 0 10px #FFD700, 0 0 20px #ffaa00; }
+.rank-A       { color: #44ffff; }
+.rank-B       { color: #44ff88; }
+.rank-C       { color: #cccccc; }
+.rank-D       { color: #ff8844; }
+.rank-E       { color: #ff4444; }
+.rank-F       { color: #886666; }
+.rank-comment { color: #aaa; font-size: 0.8em; line-height: 1.9; display: inline-block; margin-top: 4px; }
+#gameover-rank { color: #88ffaa; font-size: clamp(0.75em, 3.5vw, 0.85em); line-height: 2.2; }
+
 /* ===== アニメーション ===== */
 @keyframes float {
   0%, 100% { transform: translateY(0); }

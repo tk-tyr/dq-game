@@ -34,6 +34,7 @@ function newPlayer() {
     poisoned: false,
     brokeCheatUsed: false,
     secretCheatUsed: false,
+    zomaDefeated: false,
   };
 }
 
@@ -85,7 +86,7 @@ function typeMsg(text, cb) {
     const c = chars[i++];
     if (c === '\n') el.appendChild(document.createElement('br'));
     else el.appendChild(document.createTextNode(c));
-  }, 35);
+  }, 15);
 }
 
 function skipTyping() {
@@ -193,6 +194,43 @@ function maxOutStatsSecret() {
   player.midBossDefeated = [true, true];
 }
 
+// ===== ランク計算 =====
+function calcRank(isSecret) {
+  const ch  = player.cheated || player.bonusTime > 0;  // 弱チート（宿屋チート＋時間チート）
+  const sc  = player.secretCheatUsed;
+  const mb0 = player.midBossDefeated[0];
+  const mb1 = player.midBossDefeated[1];
+  const zm  = player.zomaDefeated;
+  let rank, comment;
+  if (isSecret) {
+    if      (!ch && !sc) { rank = 'SS'; comment = 'いかなる　チートも　つかわず　深淵の魔神を　討ち果たした！\n真の　伝説の勇者！！'; }
+    else if (!ch)        { rank = 'S';  comment = '深淵の魔神を　討ち果たした　真の勇者！'; }
+    else                 { rank = 'A';  comment = '深淵の魔神を　倒した！\nチートなしでの　挑戦も　試してみよう！'; }
+  } else if (zm) {
+    if (!ch) { rank = 'B'; comment = 'ゾーマを　倒しただけでは　真の勇者には　なれない。\n深淵の魔神を　倒してこそ　真の勇者である！'; }
+    else     { rank = 'C'; comment = 'ゾーマを　倒した。\nチートなしで　深淵の魔神に　挑め！'; }
+  } else if (!mb0) {
+    rank = 'F'; comment = 'ゴーレムも　倒せなかった...\nはじめから　やり直せ！';
+  } else if (!mb1) {
+    rank = 'E'; comment = 'ボストロールを　倒せなかった...\n力を　つけて　再び　挑め！';
+  } else {
+    rank = 'D'; comment = 'ゾーマを　倒せなかった...\nまだまだ　修行が　足りぬ。';
+  }
+  return { rank, comment };
+}
+
+function rankHTML(isSecret) {
+  const { rank, comment } = calcRank(isSecret);
+  return `<span class="rank-label">ランク</span>　<span class="rank-badge rank-${rank}">${rank}</span><br>` +
+         `<span class="rank-comment">${comment}</span>`;
+}
+
+// ===== ゲームオーバー =====
+function showGameOver() {
+  document.getElementById('gameover-rank').innerHTML = rankHTML(false);
+  show('gameover');
+}
+
 // ===== ゲームクリア =====
 function gameClear(isSecret = false) {
   const sec = Math.floor(getElapsedMs() / 1000);
@@ -209,7 +247,8 @@ function gameClear(isSecret = false) {
     `武器: ${eq.weapon || 'なし'}　鎧: ${eq.armor || 'なし'}　盾: ${eq.shield || 'なし'}<br>` +
     `プレイ時間: ${Math.floor(sec / 60)}分${sec % 60}秒` +
     (player.cheated ? '<br><span style="color:#ff8844">※チート使用</span>' : '') +
-    (isOvertime() ? '<br><span style="color:#8844ff">※タイムシフト使用</span>' : '');
+    (isOvertime() ? '<br><span style="color:#8844ff">※タイムシフト使用</span>' : '') +
+    '<br><br>' + rankHTML(isSecret);
   show('clear');
 }
 

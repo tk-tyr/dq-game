@@ -244,28 +244,26 @@ function doWalk() {
     const hasRotoEquip = player.equipped.weapon === 'ロトの剣' &&
                          player.equipped.armor  === 'ロトの鎧' &&
                          player.equipped.shield === 'ロトの盾';
-    if ((yaku >= 7 && doku >= 7 && luck >= 7 && hasRotoEquip) || player.fieldEncounters >= 777) {
-      if (player.fieldEncounters >= 777) player.fieldEncounters = 0;
+    if ((yaku >= 7 && doku >= 7 && luck >= 7 && hasRotoEquip) || player.fieldEncounters >= 24) {
+      if (player.fieldEncounters >= 24) player.fieldEncounters = 0;
       typeMsg('大地が　ふるえた...\n深淵の魔神が　あらわれた！', () => startBattle('深淵の魔神'));
       return;
     }
   }
 
-  // 暗黒洞窟: 幸運の粉7個 → メタルスライム確定遭遇
+  // 暗黒洞窟: 幸運の粉7個 → メタルスライム確定遭遇（粉はバトル後に消費）
   if (player.area === 1) {
     const luckInv = player.items.find(i => i.name === '幸運の粉');
     if (luckInv && luckInv.n >= 7) {
-      luckInv.n = 0;
       typeMsg('幸運の粉が　かがやいた！\nメタルスライムが　あらわれた！', () => startBattle('メタルスライム'));
       return;
     }
   }
 
-  // 魔王の城: 幸運の粉7個 → メタルキング確定遭遇
+  // 魔王の城: 幸運の粉7個 → メタルキング確定遭遇（粉はバトル後に消費）
   if (player.area === 2) {
     const luckInv = player.items.find(i => i.name === '幸運の粉');
     if (luckInv && luckInv.n >= 7) {
-      luckInv.n = 0;
       typeMsg('幸運の粉が　きんいろに　ひかった！\nメタルキングが　あらわれた！', () => startBattle('メタルキング'));
       return;
     }

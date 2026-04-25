@@ -3,7 +3,7 @@
 function buildExpTable() {
   const t = [0, 0];
   for (let lv = 1; lv <= 98; lv++) {
-    t.push(t[lv] + Math.round(4 * Math.pow(lv, 1.3)));
+    t.push(t[lv] + Math.round(2 * Math.pow(lv, 1.3)));
   }
   return t; // t[2]=4, t[10]~310, t[20]~1620, t[60]~44000, t[99]~67000
 }
@@ -13,31 +13,31 @@ const MONSTERS = {
   // 平原
   'スライム':        { lv: 1,  hp: 12,   atk: 12,  def: 3,  exp: 4,   gold: 2,   emoji: '🟣' },
   'ドラキー':        { lv: 3,  hp: 22,   atk: 20,  def: 5,  exp: 9,   gold: 5,   emoji: '🦇' },
-  'おおありくい':    { lv: 5,  hp: 38,   atk: 30,  def: 8,  exp: 15,  gold: 8,   emoji: '🐜' },
-  'キメラ':          { lv: 7,  hp: 55,   atk: 42,  def: 12, exp: 22,  gold: 12,  emoji: '🦅' },
-  'リザードマン':    { lv: 9,  hp: 72,   atk: 56,  def: 16, exp: 30,  gold: 16,  emoji: '🦎' },
-  'ゴーレム':        { lv: 12, hp: 320,  atk: 88,  def: 32, exp: 110, gold: 65,  emoji: '🗿', isMidBoss: true },
+  'おおありくい':    { lv: 5,  hp: 38,   atk: 42,  def: 8,  exp: 15,  gold: 8,   emoji: '🐜' },
+  'キメラ':          { lv: 7,  hp: 55,   atk: 55,  def: 12, exp: 22,  gold: 12,  emoji: '🦅' },
+  'リザードマン':    { lv: 9,  hp: 72,   atk: 70,  def: 16, exp: 30,  gold: 16,  emoji: '🦎' },
+  'ゴーレム':        { lv: 12, hp: 250,  atk: 80,  def: 35, exp: 110, gold: 65,  emoji: '🗿', isMidBoss: true },
   // 暗黒洞窟
-  'メタルスライム':  { lv: 15, hp: 6,    atk: 30,  def: 120,exp: 150, gold: 55,  emoji: '⚪' },
-  'オーク':          { lv: 12, hp: 82,   atk: 58,  def: 18, exp: 30,  gold: 18,  emoji: '👹' },
-  'スライムベス':    { lv: 14, hp: 92,   atk: 54,  def: 20, exp: 35,  gold: 20,  emoji: '🟢', usesPoison: true },
-  'トロル':          { lv: 16, hp: 118,  atk: 72,  def: 24, exp: 46,  gold: 27,  emoji: '👺' },
-  'ポイズントード':  { lv: 18, hp: 108,  atk: 68,  def: 23, exp: 42,  gold: 25,  emoji: '🐸', usesPoison: true },
-  'スカルナイト':    { lv: 20, hp: 132,  atk: 82,  def: 30, exp: 55,  gold: 34,  emoji: '⚔️' },
-  'アンデッド':      { lv: 24, hp: 162,  atk: 98,  def: 36, exp: 72,  gold: 45,  emoji: '🧟' },
-  'ボストロール':    { lv: 28, hp: 620,  atk: 165, def: 52, exp: 180, gold: 105, emoji: '👾', isMidBoss: true },
+  'メタルスライム':  { lv: 15, hp: 2,    atk: 30,  def: 250,exp: 130, gold: 55,  emoji: '⚪' },
+  'オーク':          { lv: 12, hp: 82,   atk: 93,  def: 18, exp: 30,  gold: 18,  emoji: '👹' },
+  'スライムベス':    { lv: 14, hp: 92,   atk: 89,  def: 20, exp: 35,  gold: 20,  emoji: '🟢', usesPoison: true },
+  'トロル':          { lv: 16, hp: 118,  atk: 107, def: 24, exp: 46,  gold: 27,  emoji: '👺' },
+  'ポイズントード':  { lv: 18, hp: 108,  atk: 103, def: 23, exp: 42,  gold: 25,  emoji: '🐸', usesPoison: true },
+  'スカルナイト':    { lv: 20, hp: 132,  atk: 117, def: 30, exp: 55,  gold: 34,  emoji: '⚔️' },
+  'アンデッド':      { lv: 24, hp: 162,  atk: 133, def: 36, exp: 72,  gold: 45,  emoji: '🧟' },
+  'ボストロール':    { lv: 28, hp: 500,  atk: 165, def: 40, exp: 180, gold: 105, emoji: '👾', isMidBoss: true },
   // 魔王の城
-  'デスナイト':      { lv: 28, hp: 168,  atk: 102, def: 40, exp: 85,  gold: 70,  emoji: '💀' },
-  'キラーマシン':    { lv: 32, hp: 202,  atk: 118, def: 48, exp: 110, gold: 92,  emoji: '🤖' },
-  'デスバイパー':    { lv: 34, hp: 185,  atk: 110, def: 44, exp: 98,  gold: 81,  emoji: '🐍', usesPoison: true },
-  'ドラゴン':        { lv: 36, hp: 235,  atk: 128, def: 54, exp: 132, gold: 105, emoji: '🐉' },
-  'ダースドラゴン':  { lv: 42, hp: 288,  atk: 148, def: 65, exp: 158, gold: 130, emoji: '🔥' },
-  'キングサーペント':{ lv: 44, hp: 268,  atk: 142, def: 60, exp: 145, gold: 122, emoji: '🦂', usesPoison: true },
+  'デスナイト':      { lv: 28, hp: 168,  atk: 178, def: 40, exp: 85,  gold: 70,  emoji: '💀' },
+  'キラーマシン':    { lv: 32, hp: 202,  atk: 185, def: 48, exp: 110, gold: 92,  emoji: '🤖' },
+  'デスバイパー':    { lv: 34, hp: 185,  atk: 180, def: 44, exp: 98,  gold: 81,  emoji: '🐍', usesPoison: true },
+  'ドラゴン':        { lv: 36, hp: 235,  atk: 188, def: 54, exp: 132, gold: 105, emoji: '🐉' },
+  'ダースドラゴン':  { lv: 42, hp: 288,  atk: 202, def: 65, exp: 158, gold: 130, emoji: '🔥' },
+  'キングサーペント':{ lv: 44, hp: 300,  atk: 210, def: 68, exp: 160, gold: 150, emoji: '🦂', usesPoison: true },
   // メタル系
-  'メタルキング':    { lv: 50, hp: 10,   atk: 75,  def: 255,exp: 2500,gold: 500, emoji: '👑' },
+  'メタルキング':    { lv: 50, hp: 3,   atk: 100,  def: 450,exp: 1000,gold: 200, emoji: '👑' },
   // ボス
-  '魔王ゾーマ':      { lv: 60, hp: 750,  atk: 165, def: 58, exp: 0,   gold: 0,   emoji: '👿', isBoss: true, usesPoison: true },
-  '深淵の魔神':      { lv: 90, hp: 6000, atk: 420, def: 130,exp: 0,   gold: 0,   emoji: '🌑', isBoss: true, isSecretBoss: true, usesPoison: true },
+  '魔王ゾーマ':      { lv: 60, hp: 900,  atk: 280, def: 70, exp: 0,   gold: 0,   emoji: '👿', isBoss: true, usesPoison: true },
+  '深淵の魔神':      { lv: 90, hp: 6000, atk: 430, def: 140,exp: 0,   gold: 0,   emoji: '🌑', isBoss: true, isSecretBoss: true, usesPoison: true },
 };
 
 const AREAS = [
@@ -90,7 +90,7 @@ const WEAPONS = [
   { name: '木の棒',   atk: 0,   buy: 0    },
   { name: '銅の剣',   atk: 12,  buy: 80   },
   { name: '鉄の剣',   atk: 28,  buy: 350  },
-  { name: '魔法の剣',   atk: 55,  buy: 1200 },
+  { name: '魔法の剣',   atk: 55,  buy: 1500 },
   { name: 'ロトの剣', atk: 110, buy: 6000 },
 ];
 const ARMORS = [
@@ -98,13 +98,13 @@ const ARMORS = [
   { name: '革の鎧',   def: 8,   buy: 120  },
   { name: '鉄の鎧',   def: 20,  buy: 600  },
   { name: '魔法の鎧', def: 38,  buy: 2000 },
-  { name: 'ロトの鎧', def: 75,  buy: 9000 },
+  { name: 'ロトの鎧', def: 75,  buy: 8000 },
 ];
 const SHIELDS = [
   { name: '木の盾',   def: 5,   buy: 50   },
   { name: '鉄の盾',   def: 14,  buy: 300  },
-  { name: '魔法の盾', def: 25,  buy: 1000 },
-  { name: 'ロトの盾', def: 50,  buy: 5000 },
+  { name: '魔法の盾', def: 25,  buy: 1200 },
+  { name: 'ロトの盾', def: 50,  buy: 6000 },
 ];
 
 function findEquip(name) {

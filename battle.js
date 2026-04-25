@@ -206,7 +206,7 @@ function afterEnemyTurn() {
     shakePlayer();
     updateBattleUI();
     typeMsg(`どくの　ダメージ！　${dmg}！`, () => {
-      if (player.hp <= 0) typeMsg('どくで　ゆうしゃは　たおれた...', () => setTimeout(() => show('gameover'), 800));
+      if (player.hp <= 0) typeMsg('どくで　ゆうしゃは　たおれた...', () => setTimeout(() => showGameOver(), 800));
       else { battlePhase = 'cmd'; setBattleCmds(); }
     });
   } else {
@@ -251,13 +251,14 @@ function enemyTurn() {
   else if (isSpecial && enemy.isMidBoss)                     msg = `${enemy.name}の　とくしゅこうげき！　${dmg}の　ダメージ！`;
   else                                                       msg = `${enemy.name}の　こうげき！　ゆうしゃに　${dmg}の　ダメージ！`;
   typeMsg(msg, () => {
-    if (player.hp <= 0) typeMsg('ゆうしゃは　たおれた...', () => setTimeout(() => show('gameover'), 800));
+    if (player.hp <= 0) typeMsg('ゆうしゃは　たおれた...', () => setTimeout(() => showGameOver(), 800));
     else afterEnemyTurn();
   });
 }
 
 function winBattle() {
-  const luckN = player.items.find(i => i.name === '幸運の粉')?.n || 0;
+  const luckInv = player.items.find(i => i.name === '幸運の粉');
+  const luckN = luckInv?.n || 0;
   const expGain = luckN > 0 ? Math.floor(enemy.exp * (1 + luckN * 0.1)) : enemy.exp;
   player.exp += expGain;
   player.gold += enemy.gold;
@@ -266,14 +267,34 @@ function winBattle() {
   const isSecret   = enemy.isSecretBoss;
   const wasMidBoss = enemy.isMidBoss;
   const midBossIdx = wasMidBoss ? AREAS[player.area].midBossIdx : -1;
+  const isMetal = enemy.name === 'メタルスライム' || enemy.name === 'メタルキング';
   const expMsg = luckN > 0
     ? `${expGain}けいけんちと　${enemy.gold}Gを　てにいれた！（幸運の粉×${luckN}で+${Math.floor(luckN * 10)}%）`
     : `${enemy.exp}けいけんちと　${enemy.gold}Gを　てにいれた！`;
   const msgs = [`${enemy.name}を　たおした！`, expMsg, ...checkLevelUp()];
+  if (isMetal && luckN >= 7 && luckInv) {
+    luckInv.n = 0;
+    msgs.push('幸運の粉の　ちからが　ほとばしった！\n（幸運の粉が　すべて　きえた）');
+  }
   enemy = null;
   qMsg(msgs, () => {
-    if (wasBoss) {
-      gameClear(isSecret);
+    if (wasBoss && !isSecret) {
+      player.zomaDefeated = true;
+      cmds = [
+        { label: 'はい', fn: () => {
+          clearCmds('battle-cmd-list');
+          typeMsg('深淵の　やみが　うごめきだした...\n深淵の魔神が　あらわれた！', () => startBattle('深淵の魔神'));
+        }},
+        { label: 'いいえ', fn: () => {
+          clearCmds('battle-cmd-list');
+          gameClear(false);
+        }},
+      ];
+      sel = 0;
+      renderCmds('battle-cmd-list');
+      typeMsg('まおうを　たおした！\n...\n「ゆうしゃよ。この　せかいには　まだ\n真の　やみが　のこっている。\n深淵の魔神を　たおしますか？」');
+    } else if (wasBoss && isSecret) {
+      gameClear(true);
     } else if (wasMidBoss) {
       if (midBossIdx >= 0) player.midBossDefeated[midBossIdx] = true;
       show('explore');
