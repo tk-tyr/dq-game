@@ -14,36 +14,36 @@ const EXP_TABLE = buildExpTable();
 // ===== モンスターデータ =====
 const MONSTERS = {
   // 平原
-  'スライム':       { hp: 8,   atk: 8,   def: 2,  exp: 3,    gold: 2,   emoji: '🟣' },
-  'ドラキー':       { hp: 14,  atk: 14,  def: 3,  exp: 6,    gold: 4,   emoji: '🦇' },
-  'おおありくい':   { hp: 25,  atk: 20,  def: 5,  exp: 10,   gold: 6,   emoji: '🐜' },
-  'キメラ':         { hp: 32,  atk: 24,  def: 6,  exp: 13,   gold: 9,   emoji: '🦅' },
-  'リザードマン':   { hp: 38,  atk: 28,  def: 8,  exp: 17,   gold: 11,  emoji: '🦎' },
+  'スライム':        { lv: 1,  hp: 8,    atk: 8,   def: 2,  exp: 3,   gold: 2,   emoji: '🟣' },
+  'ドラキー':        { lv: 3,  hp: 14,   atk: 14,  def: 3,  exp: 6,   gold: 4,   emoji: '🦇' },
+  'おおありくい':    { lv: 5,  hp: 25,   atk: 20,  def: 5,  exp: 10,  gold: 6,   emoji: '🐜' },
+  'キメラ':          { lv: 7,  hp: 32,   atk: 24,  def: 6,  exp: 13,  gold: 9,   emoji: '🦅' },
+  'リザードマン':    { lv: 9,  hp: 38,   atk: 28,  def: 8,  exp: 17,  gold: 11,  emoji: '🦎' },
   // 平原 中ボス
-  'ゴーレム':       { hp: 70,  atk: 30,  def: 14, exp: 70,   gold: 50,  emoji: '🗿', isMidBoss: true },
+  'ゴーレム':        { lv: 12, hp: 70,   atk: 30,  def: 14, exp: 70,  gold: 50,  emoji: '🗿', isMidBoss: true },
   // 暗黒洞窟
-  'メタルスライム': { hp: 4,   atk: 20,  def: 100,exp: 60,   gold: 30,  emoji: '⚪' },
-  'オーク':         { hp: 40,  atk: 30,  def: 10, exp: 18,   gold: 12,  emoji: '👹' },
-  'トロル':         { hp: 65,  atk: 42,  def: 15, exp: 30,   gold: 18,  emoji: '👺' },
-  'スライムベス':   { hp: 45,  atk: 25,  def: 10, exp: 20,   gold: 15,  emoji: '🟢', usesPoison: true },
-  'ポイズントード': { hp: 55,  atk: 32,  def: 12, exp: 26,   gold: 18,  emoji: '🐸', usesPoison: true },
-  'スカルナイト':   { hp: 58,  atk: 40,  def: 14, exp: 28,   gold: 22,  emoji: '⚔️' },
-  'アンデッド':     { hp: 72,  atk: 48,  def: 18, exp: 36,   gold: 26,  emoji: '🧟' },
+  'メタルスライム':  { lv: 15, hp: 4,    atk: 20,  def: 100,exp: 60,  gold: 30,  emoji: '⚪' },
+  'オーク':          { lv: 12, hp: 40,   atk: 30,  def: 10, exp: 18,  gold: 12,  emoji: '👹' },
+  'トロル':          { lv: 16, hp: 65,   atk: 42,  def: 15, exp: 30,  gold: 18,  emoji: '👺' },
+  'スライムベス':    { lv: 14, hp: 45,   atk: 25,  def: 10, exp: 20,  gold: 15,  emoji: '🟢', usesPoison: true },
+  'ポイズントード':  { lv: 18, hp: 55,   atk: 32,  def: 12, exp: 26,  gold: 18,  emoji: '🐸', usesPoison: true },
+  'スカルナイト':    { lv: 20, hp: 58,   atk: 40,  def: 14, exp: 28,  gold: 22,  emoji: '⚔️' },
+  'アンデッド':      { lv: 24, hp: 72,   atk: 48,  def: 18, exp: 36,  gold: 26,  emoji: '🧟' },
   // 暗黒洞窟 中ボス
-  'ボストロール':   { hp: 120, atk: 52,  def: 20, exp: 120,  gold: 70,  emoji: '👾', isMidBoss: true },
+  'ボストロール':    { lv: 28, hp: 120,  atk: 52,  def: 20, exp: 120, gold: 70,  emoji: '👾', isMidBoss: true },
   // 魔王の城
-  'デスナイト':     { hp: 90,  atk: 58,  def: 22, exp: 55,   gold: 35,  emoji: '💀' },
-  'キラーマシン':   { hp: 105, atk: 66,  def: 28, exp: 72,   gold: 48,  emoji: '🤖' },
-  'ドラゴン':       { hp: 120, atk: 72,  def: 30, exp: 90,   gold: 55,  emoji: '🐉' },
-  'ダースドラゴン': { hp: 145, atk: 80,  def: 36, exp: 105,  gold: 68,  emoji: '🔥' },
-  'デスバイパー':   { hp: 95,  atk: 62,  def: 24, exp: 65,   gold: 42,  emoji: '🐍', usesPoison: true },
-  'キングサーペント':{ hp: 130, atk: 78,  def: 34, exp: 95,  gold: 62,  emoji: '🦂', usesPoison: true },
-  // メタル系 (幸運の粉専用)
-  'メタルキング':   { hp: 8,   atk: 55,  def: 255,exp: 600,  gold: 200, emoji: '👑' },
-  // ラスボス (lv20前後、良装備で撃破可能)
-  '魔王ゾーマ':     { hp: 250, atk: 100, def: 30, exp: 0,    gold: 0,   emoji: '👿', isBoss: true, usesPoison: true },
-  // 裏ボス (lv90前後推奨)
-  '深淵の魔神':     { hp: 3000,atk: 330, def: 80, exp: 0,    gold: 0,   emoji: '🌑', isBoss: true, isSecretBoss: true, usesPoison: true },
+  'デスナイト':      { lv: 28, hp: 90,   atk: 58,  def: 22, exp: 55,  gold: 35,  emoji: '💀' },
+  'キラーマシン':    { lv: 32, hp: 105,  atk: 66,  def: 28, exp: 72,  gold: 48,  emoji: '🤖' },
+  'ドラゴン':        { lv: 36, hp: 120,  atk: 72,  def: 30, exp: 90,  gold: 55,  emoji: '🐉' },
+  'ダースドラゴン':  { lv: 42, hp: 145,  atk: 80,  def: 36, exp: 105, gold: 68,  emoji: '🔥' },
+  'デスバイパー':    { lv: 34, hp: 95,   atk: 62,  def: 24, exp: 65,  gold: 42,  emoji: '🐍', usesPoison: true },
+  'キングサーペント':{ lv: 44, hp: 130,  atk: 78,  def: 34, exp: 95,  gold: 62,  emoji: '🦂', usesPoison: true },
+  // メタル系
+  'メタルキング':    { lv: 50, hp: 8,    atk: 55,  def: 255,exp: 600, gold: 200, emoji: '👑' },
+  // ラスボス
+  '魔王ゾーマ':      { lv: 60, hp: 250,  atk: 100, def: 30, exp: 0,   gold: 0,   emoji: '👿', isBoss: true, usesPoison: true },
+  // 裏ボス
+  '深淵の魔神':      { lv: 90, hp: 3000, atk: 330, def: 80, exp: 0,   gold: 0,   emoji: '🌑', isBoss: true, isSecretBoss: true, usesPoison: true },
 };
 
 const AREAS = [
@@ -266,6 +266,7 @@ function equipItem(item) {
 }
 
 function doEquipShop() {
+  resetCaveToggle();
   const eq = player.equipped;
   cmds = [
     { label: '武器を　かう', fn: () => doEquipCategory('weapon') },
@@ -320,6 +321,7 @@ function doBuyEquip(item, type) {
 }
 
 function doCheckEquip() {
+  resetCaveToggle();
   const eq = player.equipped;
   const wa = eq.weapon ? (findEquip(eq.weapon)?.atk || 0) : 0;
   const aa = eq.armor  ? (findEquip(eq.armor)?.def  || 0) : 0;
@@ -700,8 +702,29 @@ function setExploreCmds() {
   renderCmds('explore-cmd-list');
 }
 
+// ===== 出現敵を選択 =====
+function pickEnemy(area, playerLv) {
+  const monsters = AREAS[area].monsters;
+  if (area === 0) {
+    // 平原: プレイヤーLVより3以上低い敵は出現しない
+    const eligible = monsters.filter(m => MONSTERS[m].lv >= playerLv - 2);
+    const pool = eligible.length ? eligible : [monsters[monsters.length - 1]];
+    return pool[rand(pool.length)];
+  }
+  // 暗黒洞窟・魔王の城: レベルが近いほど高確率で出現
+  const weights = monsters.map(m => Math.max(1, 10 - Math.abs(MONSTERS[m].lv - playerLv)));
+  const total = weights.reduce((s, w) => s + w, 0);
+  let r = rand(total);
+  for (let i = 0; i < monsters.length; i++) {
+    r -= weights[i];
+    if (r < 0) return monsters[i];
+  }
+  return monsters[monsters.length - 1];
+}
+
 // ===== 歩く（特殊条件判定つき） =====
 function doWalk() {
+  resetCaveToggle();
   const a = AREAS[player.area];
 
   // フィールドでの毒ダメージ
@@ -740,6 +763,11 @@ function doWalk() {
       typeMsg('幸運の粉が　かがやいた！\nメタルスライムが　あらわれた！', () => startBattle('メタルスライム'));
       return;
     }
+    // 暗黒洞窟: 5回に1回メタルスライムが出現
+    if (rand(5) === 0) {
+      typeMsg('なにかが　ひかっている！\nメタルスライムが　あらわれた！', () => startBattle('メタルスライム'));
+      return;
+    }
   } else if (player.area === 2) {
     // 魔王の城: 幸運の粉7個 → メタルキング確定
     const luckInv = player.items.find(i => i.name === '幸運の粉');
@@ -751,14 +779,17 @@ function doWalk() {
   }
 
   if (Math.random() < 0.65) {
-    const m = a.monsters[rand(a.monsters.length)];
+    const m = pickEnemy(player.area, player.lv);
     typeMsg(`${m}に　であった！`, () => startBattle(m));
   } else {
     typeMsg('このあたりは　しずかだ。', () => updateExploreUI());
   }
 }
 
-// ===== エリア移動 (暗黒洞窟往来カウント付き) =====
+// 暗黒洞窟連続往来カウントをリセット（移動以外の操作を行ったとき）
+function resetCaveToggle() { player.darkCaveToggle = 0; }
+
+// ===== エリア移動 (暗黒洞窟連続往来カウント付き) =====
 function handleCaveToggle(from, to) {
   if (from !== 1 && to !== 1) return false;
   player.darkCaveToggle++;
@@ -799,8 +830,9 @@ function doMoveBack() {
   }
 }
 
-// チート2: 所持金なしで宿屋7回 → 特別シナリオ＋カンスト
+// チート2: 所持金なしで宿屋7回連続 → 特別シナリオ＋カンスト
 function doInn() {
+  resetCaveToggle();
   const cost = 10 + player.lv * 5;
   if (player.gold < cost) {
     brokeInnCount++;
@@ -836,6 +868,7 @@ function doInn() {
 }
 
 function doShop() {
+  resetCaveToggle();
   const stock = SHOP_BY_AREA[player.area];
   cmds = stock.map(name => ({
     label: `${name}（${ITEMS[name].buy}G）　${ITEMS[name].desc}`,
@@ -859,6 +892,7 @@ function doBuy(name) {
 }
 
 function doBoss() {
+  resetCaveToggle();
   typeMsg('魔王ゾーマの　もとへ　むかう...', () => startBattle('魔王ゾーマ'));
 }
 
