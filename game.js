@@ -33,6 +33,7 @@ function newPlayer() {
     cheated: false,
     poisoned: false,
     brokeCheatUsed: false,
+    secretCheatUsed: false,
   };
 }
 

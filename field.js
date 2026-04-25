@@ -122,9 +122,8 @@ function triggerSecretMaxOut() {
 function doCheckEquip() {
   resetCaveToggle();
   brokeInnCount = 0;
-  // 秘密チート: 装備確認が有効な位置は 0,1,2,6 のみ
-  if (secretCheatProgress === 0 || secretCheatProgress === 1 ||
-      secretCheatProgress === 2 || secretCheatProgress === 6) {
+  // 秘密チート: 偶数ステップ(0,2,4,6)で装備確認が有効
+  if (secretCheatProgress % 2 === 0) {
     secretCheatProgress++;
   } else {
     secretCheatProgress = 0;
@@ -339,7 +338,7 @@ function doInn() {
     // 金不足: 秘密チートをリセット
     secretCheatProgress = 0;
     // 宿屋チート弱（1回限り・他コマンドでリセット済みが前提）
-    if (!player.brokeCheatUsed) {
+    if (!player.brokeCheatUsed && !player.secretCheatUsed) {
       brokeInnCount++;
       if (brokeInnCount >= 7) {
         brokeInnCount = 0;
@@ -367,9 +366,8 @@ function doInn() {
     return;
   }
 
-  // 金あり: 秘密チート進行（宿屋フェーズ: progress 3,4,5,7）
-  if (secretCheatProgress === 3 || secretCheatProgress === 4 ||
-      secretCheatProgress === 5 || secretCheatProgress === 7) {
+  // 金あり: 秘密チート進行（奇数ステップ: 1,3,5,7）
+  if (secretCheatProgress % 2 === 1) {
     secretCheatProgress++;
     if (secretCheatProgress === 8) {
       secretCheatProgress = 0;
@@ -378,6 +376,7 @@ function doInn() {
       player.hp = player.maxHp;
       player.mp = player.maxMp;
       player.poisoned = false;
+      player.secretCheatUsed = true;
       updateExploreUI();
       triggerSecretMaxOut();
       return;
