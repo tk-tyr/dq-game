@@ -122,9 +122,11 @@ function triggerSecretMaxOut() {
 function doCheckEquip() {
   resetCaveToggle();
   brokeInnCount = 0;
-  // 秘密チート: 偶数ステップ(0,2,4,6)で装備確認が有効
-  if (secretCheatProgress % 2 === 0) {
-    secretCheatProgress++;
+  // 強チート条件チェック: やくそう3個・幸運の粉1個・HP/MPフル
+  const _yaku = player.items.find(i => i.name === 'やくそう')?.n || 0;
+  const _luck = player.items.find(i => i.name === '幸運の粉')?.n || 0;
+  if (_yaku === 3 && _luck === 1 && player.hp === player.maxHp && player.mp === player.maxMp) {
+    secretCheatProgress = 1;
   } else {
     secretCheatProgress = 0;
   }
@@ -334,10 +336,19 @@ function doInn() {
   resetCaveToggle();
   const cost = 10 + player.lv * 5;
 
-  if (player.gold < cost) {
-    // 金不足: 秘密チートをリセット
+  // 強チート: 直前の装備確認で条件を満たしていた場合に発動（金不要）
+  if (secretCheatProgress === 1) {
     secretCheatProgress = 0;
-    // 宿屋チート弱（1回限り・他コマンドでリセット済みが前提）
+    brokeInnCount = 0;
+    player.secretCheatUsed = true;
+    triggerSecretMaxOut();
+    return;
+  }
+
+  secretCheatProgress = 0;
+
+  if (player.gold < cost) {
+    // 弱チート（1回限り・強チート未使用時のみ）
     if (!player.brokeCheatUsed && !player.secretCheatUsed) {
       brokeInnCount++;
       if (brokeInnCount >= 7) {
@@ -364,25 +375,6 @@ function doInn() {
     }
     typeMsg(`おカネが　たりない！（${cost}G　ひつよう）`);
     return;
-  }
-
-  // 金あり: 秘密チート進行（奇数ステップ: 1,3,5,7）
-  if (secretCheatProgress % 2 === 1) {
-    secretCheatProgress++;
-    if (secretCheatProgress === 8) {
-      secretCheatProgress = 0;
-      brokeInnCount = 0;
-      player.gold -= cost;
-      player.hp = player.maxHp;
-      player.mp = player.maxMp;
-      player.poisoned = false;
-      player.secretCheatUsed = true;
-      updateExploreUI();
-      triggerSecretMaxOut();
-      return;
-    }
-  } else {
-    secretCheatProgress = 0;
   }
 
   brokeInnCount = 0;
