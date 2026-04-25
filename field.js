@@ -52,45 +52,38 @@ function doEquipCategory(type) {
     const tag  = player.equipped[type] === item.name ? '★' : '';
     return { label: `${item.name}(${item.buy}G) ${stat}${tag}`, fn: () => doBuyEquip(item, type) };
   });
-  cmds.push({ label: 'もどる', fn: () => {
-    equipBrowseCounts[type]++;
-    if (equipBrowseCounts[type] >= 7) {
-      equipBrowseCounts[type] = 0;
-      const freeItem = base.find(e =>
-        e.buy > 0 &&
-        !player.soldOut[type].includes(e.name) &&
-        !e.name.startsWith('ロトの')
-      );
-      if (freeItem) {
-        const idx = base.findIndex(e => e.name === freeItem.name);
-        for (let i = 0; i <= idx; i++) {
-          if (base[i].buy > 0 && !player.soldOut[type].includes(base[i].name)) {
-            player.soldOut[type].push(base[i].name);
-          }
-        }
-        equipItem(freeItem);
-        updateExploreUI();
-        typeMsg(
-          `ふしぎなことが　おきた！\n${freeItem.name}が　どこからか　あらわれた！\n（下位の装備は　うりきれになった）`,
-          () => doEquipShop()
-        );
-      } else {
-        doEquipShop();
-      }
-    } else {
-      doEquipShop();
-    }
-  }});
+  cmds.push({ label: 'もどる', fn: doEquipShop });
   sel = 0;
   renderCmds('explore-cmd-list');
   typeMsg(`現在の装備: ${player.equipped[type] || 'なし'}\nなにを　かいますか？`);
 }
 
 function doBuyEquip(item, type) {
+  if (player.gold < item.buy) {
+    const base = type === 'weapon' ? WEAPONS : type === 'armor' ? ARMORS : SHIELDS;
+    const lowest = base.find(e => e.buy > 0 && !player.soldOut[type].includes(e.name));
+    if (lowest && lowest.name === item.name && !item.name.startsWith('ロトの')) {
+      equipBrowseCounts[type]++;
+      if (equipBrowseCounts[type] >= 7) {
+        equipBrowseCounts[type] = 0;
+        const idx = base.findIndex(e => e.name === item.name);
+        for (let i = 0; i <= idx; i++) {
+          if (base[i].buy > 0 && !player.soldOut[type].includes(base[i].name)) {
+            player.soldOut[type].push(base[i].name);
+          }
+        }
+        equipItem(item);
+        updateExploreUI();
+        typeMsg(`おカネが　たりない！（${item.buy}G　ひつよう）\n...\nふしぎなことが　おきた！\n${item.name}が　どこからか　あらわれた！\n（下位の装備は　うりきれになった）`);
+        return;
+      }
+    }
+    typeMsg(`おカネが　たりない！（${item.buy}G　ひつよう）`);
+    return;
+  }
   equipBrowseCounts.weapon = 0;
   equipBrowseCounts.armor  = 0;
   equipBrowseCounts.shield = 0;
-  if (player.gold < item.buy) { typeMsg('おカネが　たりない！'); return; }
   const oldAtk = player.atk, oldDef = player.def;
   player.gold -= item.buy;
   const base = type === 'weapon' ? WEAPONS : type === 'armor' ? ARMORS : SHIELDS;
