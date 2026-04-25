@@ -205,7 +205,7 @@ function doRun() {
 
 function afterEnemyTurn() {
   if (player.poisoned) {
-    const dmg = Math.max(1, Math.floor(player.maxHp * 0.05));
+    const dmg = Math.max(1, Math.floor(player.maxHp * 0.10));
     player.hp = Math.max(0, player.hp - dmg);
     shakePlayer();
     updateBattleUI();
@@ -241,19 +241,26 @@ function enemyTurn() {
     typeMsg(`${enemy.name}は　きずを　なおした！（HP+${h}）`, () => afterEnemyTurn());
     return;
   }
-  const usePoison = enemy.usesPoison && !player.poisoned && rand(3) === 0;
   const isSpecial = (enemy.isMidBoss || enemy.isBoss) ? rand(3) === 0 : rand(5) === 0;
-  const mult = isSpecial ? (enemy.isBoss ? 1.8 : 1.5) : 1;
+  let mult, usePoison;
+  if (enemy.isSecretBoss) {
+    mult = isSpecial ? 0.75 : 1;
+    usePoison = isSpecial && !player.poisoned;
+  } else {
+    mult = isSpecial ? (enemy.isBoss ? 1.8 : 1.5) : 1;
+    usePoison = enemy.usesPoison && !player.poisoned && rand(3) === 0;
+  }
   const dmg = Math.max(1, Math.floor(damage(enemy.atk, player.def) * mult));
   player.hp = Math.max(0, player.hp - dmg);
   if (usePoison) player.poisoned = true;
   shakePlayer();
   updateBattleUI();
   let msg;
-  if (usePoison)                                             msg = `${enemy.name}の　どくこうげき！　${dmg}の　ダメージ！\nゆうしゃは　どくに　おかされた！`;
-  else if (isSpecial && (enemy.isBoss || enemy.isSecretBoss)) msg = `${enemy.name}の　とくしゅこうげき！　${dmg}の　ダメージ！`;
-  else if (isSpecial && enemy.isMidBoss)                     msg = `${enemy.name}の　とくしゅこうげき！　${dmg}の　ダメージ！`;
-  else                                                       msg = `${enemy.name}の　こうげき！　ゆうしゃに　${dmg}の　ダメージ！`;
+  if (usePoison)                      msg = `${enemy.name}の　どくのきり！　${dmg}の　ダメージ！\nゆうしゃは　どくに　おかされた！`;
+  else if (isSpecial && enemy.isSecretBoss) msg = `${enemy.name}の　どくのきり！　${dmg}の　ダメージ！`;
+  else if (isSpecial && enemy.isBoss) msg = `${enemy.name}の　とくしゅこうげき！　${dmg}の　ダメージ！`;
+  else if (isSpecial && enemy.isMidBoss) msg = `${enemy.name}の　とくしゅこうげき！　${dmg}の　ダメージ！`;
+  else                                msg = `${enemy.name}の　こうげき！　ゆうしゃに　${dmg}の　ダメージ！`;
   typeMsg(msg, () => {
     if (player.hp <= 0) typeMsg('ゆうしゃは　たおれた...', () => setTimeout(() => showGameOver(), 800));
     else afterEnemyTurn();
@@ -284,6 +291,10 @@ function winBattle() {
   qMsg(msgs, () => {
     if (wasBoss && !isSecret) {
       player.zomaDefeated = true;
+      player.hp = player.maxHp;
+      player.mp = player.maxMp;
+      player.poisoned = false;
+      updateBattleUI();
       cmds = [
         { label: 'はい', fn: () => {
           clearCmds('battle-cmd-list');

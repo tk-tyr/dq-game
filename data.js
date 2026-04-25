@@ -37,7 +37,7 @@ const MONSTERS = {
   'メタルキング':    { lv: 50, hp: 3,   atk: 100,  def: 500,exp: 1500,gold: 600, emoji: '👑' },
   // ボス
   '魔王ゾーマ':      { lv: 60, hp: 999,  atk: 280, def: 100, exp: 3000,   gold: 0,   emoji: '👿', isBoss: true, usesPoison: true },
-  '深淵の魔神':      { lv: 90, hp: 9999, atk: 500, def: 150,exp: 0,   gold: 0,   emoji: '🌑', isBoss: true, isSecretBoss: true, usesPoison: true },
+  '深淵の魔神':      { lv: 90, hp: 9999, atk: 500, def: 150,exp: 0,   gold: 0,   emoji: '🌑', isBoss: true, isSecretBoss: true },
 };
 
 const AREAS = [
@@ -72,7 +72,7 @@ const SPELLS = {
   'メラ':      { mp: 50,  type: 'fixed',     power: 100, lv: 12, desc: 'メタル系以外に固定100ダメージ' },
   'イオナズン': { mp: 60,  type: 'fixed',     power: 170, lv: 30, desc: 'メタル系以外に固定170ダメージ' },
   'ギガディン': { mp: 90,  type: 'fixed',     power: 300, lv: 45, desc: 'メタル系以外に固定300ダメージ' },
-  'マダンテ':   { mp: 300, type: 'fixed',     power: 5000,lv: 77, desc: 'メタル系以外に固定5000ダメージ' },
+  'マダンテ':   { mp: 333, type: 'fixed',     power: 6666,lv: 77, desc: 'メタル系以外に固定6666ダメージ' },
   'デス！':    { mp: 500, type: 'instakill', power: 0,   lv: 99, desc: '必中の即死呪文' },
 };
 

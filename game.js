@@ -16,8 +16,8 @@ let secretCheatProgress = 0;
 
 function newPlayer() {
   return {
-    hp: 45, maxHp: 45,
-    mp: 15, maxMp: 15,
+    hp: 50, maxHp: 50,
+    mp: 20, maxMp: 20,
     lv: 1, exp: 0, gold: 77,
     atk: 16, def: 8,
     items: [{ name: 'やくそう', n: 3 }],
@@ -157,15 +157,15 @@ function checkLevelUp() {
 
 // ===== チート: LV99最小値カンスト =====
 // 通常レベル上げで全て最小値だった場合のLV99ステータス（初期値 + 98レベル×最小成長）
-// LV99最小: HP=1025, MP=407, ATK=310, DEF=204
+// LV99最小: HP=1030, MP=412, ATK=310, DEF=204
 // ロト全装備込みで深淵の魔神がギリギリ倒せるバランス
 function maxOutStats() {
   const weaponBonus = player.equipped.weapon ? (findEquip(player.equipped.weapon)?.atk || 0) : 0;
   const armorBonus  = player.equipped.armor  ? (findEquip(player.equipped.armor)?.def  || 0) : 0;
   const shieldBonus = player.equipped.shield ? (findEquip(player.equipped.shield)?.def  || 0) : 0;
-  player.maxHp = 45 + 98 * 10; // 1025
+  player.maxHp = 50 + 98 * 10; // 1030
   player.hp    = player.maxHp;
-  player.maxMp = 15 + 98 * 4;  // 407
+  player.maxMp = 20 + 98 * 4;  // 412
   player.mp    = player.maxMp;
   player.atk   = (16 + 98 * 3) + weaponBonus;  // 310 + 装備
   player.def   = (8  + 98 * 2) + armorBonus + shieldBonus;  // 204 + 装備
@@ -177,14 +177,14 @@ function maxOutStats() {
 }
 
 // ===== 秘密チート: 最大値カンスト（チートフラグなし）=====
-// LV99最大値: HP=1711, MP=701, ATK=506, DEF=302
+// LV99最大値: HP=1716, MP=706, ATK=506, DEF=302
 function maxOutStatsSecret() {
   const weaponBonus = player.equipped.weapon ? (findEquip(player.equipped.weapon)?.atk || 0) : 0;
   const armorBonus  = player.equipped.armor  ? (findEquip(player.equipped.armor)?.def  || 0) : 0;
   const shieldBonus = player.equipped.shield ? (findEquip(player.equipped.shield)?.def  || 0) : 0;
-  player.maxHp = 45 + 98 * 17; // 1711
+  player.maxHp = 50 + 98 * 17; // 1716
   player.hp    = player.maxHp;
-  player.maxMp = 15 + 98 * 7;  // 701
+  player.maxMp = 20 + 98 * 7;  // 706
   player.mp    = player.maxMp;
   player.atk   = (16 + 98 * 5) + weaponBonus;  // 506 + 装備
   player.def   = (8  + 98 * 3) + armorBonus + shieldBonus;  // 302 + 装備
