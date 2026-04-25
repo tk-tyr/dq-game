@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="theme-color" content="#111111">
+  <title>勇者の冒険</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="game">
+
+    <!-- タイトル -->
+    <div id="screen-title" class="screen active">
+      <div class="title-art">🐉</div>
+      <h1 class="title-logo">勇者の冒険</h1>
+      <p class="subtitle">～ 魔王ゾーマを倒せ ～</p>
+      <p class="blink">Enter / クリックで　スタート</p>
+      <div class="title-hint">操作: 矢印キー + Enter / マウスクリック</div>
+    </div>
+
+    <!-- フィールド -->
+    <div id="screen-explore" class="screen">
+      <div id="area-display">
+        <span id="area-name-badge"></span>
+        <div id="area-bg-art"></div>
+      </div>
+      <div id="status-bar">
+        <span id="st-hp"></span>
+        <span id="st-mp"></span>
+        <span id="st-lv"></span>
+        <span id="st-exp"></span>
+        <span id="st-gold"></span>
+      </div>
+      <div class="command-window">
+        <div class="cmd-title">コマンド</div>
+        <div id="explore-cmd-list"></div>
+      </div>
+      <div id="explore-message" class="message-window"></div>
+    </div>
+
+    <!-- バトル -->
+    <div id="screen-battle" class="screen">
+      <div id="battle-scene">
+        <div id="enemy-display">
+          <div id="enemy-emoji"></div>
+          <div id="enemy-name-label"></div>
+          <div id="enemy-hp-bar"><div id="enemy-hp-fill"></div></div>
+          <div id="enemy-hp-text"></div>
+        </div>
+      </div>
+      <div id="battle-status">
+        <span>HP: <span id="b-hp"></span></span>
+        <span>MP: <span id="b-mp"></span></span>
+        <span>LV: <span id="b-lv"></span></span>
+      </div>
+      <div class="command-window">
+        <div id="battle-cmd-list" class="battle-grid"></div>
+      </div>
+      <div id="battle-message" class="message-window"></div>
+    </div>
+
+    <!-- ゲームオーバー -->
+    <div id="screen-gameover" class="screen">
+      <div class="go-art">💀</div>
+      <h2 class="go-title">ゆうしゃは　しにました。</h2>
+      <p class="go-quote">「また　たびに　でよう。」</p>
+      <p class="blink">Enter / クリックで　タイトルへ</p>
+    </div>
+
+    <!-- クリア -->
+    <div id="screen-clear" class="screen">
+      <div class="clear-art">🏆</div>
+      <h2 class="clear-title">まおうを　たおした！</h2>
+      <p class="clear-sub">せかいに　へいわが　もどった！</p>
+      <div id="clear-stats"></div>
+      <p class="blink">Enter / クリックで　タイトルへ</p>
+    </div>
+
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>

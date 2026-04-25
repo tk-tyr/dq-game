@@ -1,0 +1,223 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background: #111;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: max(8px, env(safe-area-inset-top)) 0 max(8px, env(safe-area-inset-bottom));
+  font-family: 'DotGothic16', 'MS Gothic', 'ＭＳ ゴシック', monospace;
+  color: #fff;
+}
+
+#game {
+  width: 100%;
+  max-width: 460px;
+  border: 3px solid #666;
+  background: #000;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+/* スマホでは左右ボーダーを省略 */
+@media (max-width: 468px) {
+  #game { border-left: none; border-right: none; }
+}
+
+/* ===== 共通 ===== */
+.screen { display: none; flex-direction: column; min-height: min(580px, calc(100dvh - 20px)); }
+.screen.active { display: flex; }
+
+.command-window {
+  margin: 6px 8px;
+  border: 2px solid #888;
+  background: #000028;
+  padding: 8px;
+}
+
+.cmd-title {
+  color: #FFD700;
+  font-size: 0.8em;
+  border-bottom: 1px solid #444;
+  padding-bottom: 4px;
+  margin-bottom: 6px;
+}
+
+.cmd-item {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 0.88em;
+  line-height: 1.6;
+  white-space: nowrap;
+}
+
+.cmd-item::before { content: '　　'; }
+.cmd-item.selected { color: #FFD700; }
+.cmd-item.selected::before { content: '▶ '; }
+.cmd-item:hover { background: #112; }
+.cmd-item:active { background: #224; }
+
+.message-window {
+  margin: 0 8px 8px;
+  border: 2px solid #888;
+  background: #000010;
+  padding: 10px 12px;
+  min-height: 80px;
+  font-size: 0.88em;
+  line-height: 2;
+  flex-grow: 1;
+}
+
+.blink { animation: blink 1s step-end infinite; color: #FFD700; font-size: 0.85em; }
+@keyframes blink { 50% { opacity: 0; } }
+
+/* ===== タイトル ===== */
+#screen-title {
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+  background: radial-gradient(ellipse at center, #000040 0%, #000 70%);
+}
+
+.title-art  { font-size: clamp(3.5em, 18vw, 5em); animation: float 3s ease-in-out infinite; }
+.title-logo { font-size: clamp(1.2em, 6vw, 1.8em); color: #FFD700; letter-spacing: 6px; text-align: center; }
+.subtitle   { color: #aaa; font-size: clamp(0.75em, 3.5vw, 0.85em); }
+.title-hint { color: #555; font-size: clamp(0.65em, 3vw, 0.75em); margin-top: 10px; }
+
+/* ===== フィールド ===== */
+#area-display {
+  height: clamp(120px, 22vw, 160px);
+  background: linear-gradient(to bottom, #001400, #002800);
+  border-bottom: 2px solid #333;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+#area-name-badge {
+  position: absolute;
+  top: 8px; left: 8px;
+  background: rgba(0,0,0,0.8);
+  border: 1px solid #888;
+  padding: 3px 8px;
+  font-size: 0.8em;
+  color: #FFD700;
+}
+
+#area-bg-art { font-size: clamp(3.5em, 18vw, 5em); opacity: 0.8; }
+
+#status-bar {
+  display: flex;
+  gap: 8px;
+  padding: 6px 10px;
+  background: #000820;
+  border-bottom: 2px solid #333;
+  font-size: clamp(0.72em, 3.2vw, 0.82em);
+  flex-wrap: wrap;
+}
+
+#status-bar span { color: #66ff88; }
+
+/* ===== バトル ===== */
+#battle-scene {
+  height: clamp(150px, 28vw, 200px);
+  background: linear-gradient(to bottom, #000020, #001050);
+  border-bottom: 2px solid #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#enemy-display { text-align: center; }
+
+#enemy-emoji {
+  font-size: clamp(3.5em, 18vw, 5em);
+  display: block;
+  animation: float 2s ease-in-out infinite;
+  line-height: 1.2;
+}
+
+#enemy-name-label { color: #FFD700; font-size: clamp(0.85em, 3.5vw, 1em); margin-top: 4px; }
+
+#enemy-hp-bar {
+  width: 120px; height: 7px;
+  background: #333; border: 1px solid #555;
+  margin: 5px auto 2px;
+}
+#enemy-hp-fill { height: 100%; background: #44ff44; transition: width 0.4s, background 0.4s; }
+#enemy-hp-text { font-size: 0.72em; color: #aaa; }
+
+#battle-status {
+  display: flex;
+  gap: 12px;
+  padding: 6px 10px;
+  background: #000820;
+  border-bottom: 2px solid #333;
+  font-size: clamp(0.75em, 3.2vw, 0.85em);
+  flex-wrap: wrap;
+}
+#battle-status span { color: #66ff88; }
+
+.battle-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+}
+
+/* ===== ゲームオーバー ===== */
+#screen-gameover {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+  background: #0a0000;
+}
+.go-art    { font-size: clamp(3.5em, 18vw, 5em); }
+.go-title  { color: #ff4444; font-size: clamp(0.95em, 4.5vw, 1.2em); }
+.go-quote  { color: #666; font-size: clamp(0.75em, 3.5vw, 0.85em); }
+
+/* ===== クリア ===== */
+#screen-clear {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  background: radial-gradient(ellipse at center, #000040 0%, #000 70%);
+}
+.clear-art   { font-size: clamp(3.5em, 18vw, 5em); animation: float 2s ease-in-out infinite; }
+.clear-title { color: #FFD700; font-size: clamp(1em, 5vw, 1.3em); }
+.clear-sub   { color: #aaa; font-size: clamp(0.75em, 3.5vw, 0.85em); }
+#clear-stats { color: #88ffaa; font-size: clamp(0.75em, 3.5vw, 0.85em); line-height: 2.2; }
+
+/* ===== アニメーション ===== */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-8px); }
+  40%       { transform: translateX(8px); }
+  60%       { transform: translateX(-5px); }
+  80%       { transform: translateX(5px); }
+}
+
+.shake { animation: shake 0.4s ease-in-out; }
+
+/* HP color */
+.hp-hi { color: #44ff88; }
+.hp-md { color: #ffff44; }
+.hp-lo { color: #ff4444; animation: blink 0.7s step-end infinite; }
