@@ -13,37 +13,37 @@ const EXP_TABLE = buildExpTable();
 
 // ===== モンスターデータ =====
 const MONSTERS = {
-  // 平原
-  'スライム':        { lv: 1,  hp: 8,    atk: 8,   def: 2,  exp: 3,   gold: 2,   emoji: '🟣' },
-  'ドラキー':        { lv: 3,  hp: 14,   atk: 14,  def: 3,  exp: 6,   gold: 4,   emoji: '🦇' },
-  'おおありくい':    { lv: 5,  hp: 25,   atk: 20,  def: 5,  exp: 10,  gold: 6,   emoji: '🐜' },
-  'キメラ':          { lv: 7,  hp: 32,   atk: 24,  def: 6,  exp: 13,  gold: 9,   emoji: '🦅' },
-  'リザードマン':    { lv: 9,  hp: 38,   atk: 28,  def: 8,  exp: 17,  gold: 11,  emoji: '🦎' },
-  // 平原 中ボス
-  'ゴーレム':        { lv: 12, hp: 70,   atk: 30,  def: 14, exp: 70,  gold: 50,  emoji: '🗿', isMidBoss: true },
-  // 暗黒洞窟
-  'メタルスライム':  { lv: 15, hp: 4,    atk: 20,  def: 100,exp: 60,  gold: 30,  emoji: '⚪' },
-  'オーク':          { lv: 12, hp: 40,   atk: 30,  def: 10, exp: 18,  gold: 12,  emoji: '👹' },
-  'トロル':          { lv: 16, hp: 65,   atk: 42,  def: 15, exp: 30,  gold: 18,  emoji: '👺' },
-  'スライムベス':    { lv: 14, hp: 45,   atk: 25,  def: 10, exp: 20,  gold: 15,  emoji: '🟢', usesPoison: true },
-  'ポイズントード':  { lv: 18, hp: 55,   atk: 32,  def: 12, exp: 26,  gold: 18,  emoji: '🐸', usesPoison: true },
-  'スカルナイト':    { lv: 20, hp: 58,   atk: 40,  def: 14, exp: 28,  gold: 22,  emoji: '⚔️' },
-  'アンデッド':      { lv: 24, hp: 72,   atk: 48,  def: 18, exp: 36,  gold: 26,  emoji: '🧟' },
-  // 暗黒洞窟 中ボス
-  'ボストロール':    { lv: 28, hp: 120,  atk: 52,  def: 20, exp: 120, gold: 70,  emoji: '👾', isMidBoss: true },
-  // 魔王の城
-  'デスナイト':      { lv: 28, hp: 90,   atk: 58,  def: 22, exp: 55,  gold: 35,  emoji: '💀' },
-  'キラーマシン':    { lv: 32, hp: 105,  atk: 66,  def: 28, exp: 72,  gold: 48,  emoji: '🤖' },
-  'ドラゴン':        { lv: 36, hp: 120,  atk: 72,  def: 30, exp: 90,  gold: 55,  emoji: '🐉' },
-  'ダースドラゴン':  { lv: 42, hp: 145,  atk: 80,  def: 36, exp: 105, gold: 68,  emoji: '🔥' },
-  'デスバイパー':    { lv: 34, hp: 95,   atk: 62,  def: 24, exp: 65,  gold: 42,  emoji: '🐍', usesPoison: true },
-  'キングサーペント':{ lv: 44, hp: 130,  atk: 78,  def: 34, exp: 95,  gold: 62,  emoji: '🦂', usesPoison: true },
-  // メタル系
-  'メタルキング':    { lv: 50, hp: 8,    atk: 55,  def: 255,exp: 600, gold: 200, emoji: '👑' },
-  // ラスボス
-  '魔王ゾーマ':      { lv: 60, hp: 250,  atk: 100, def: 30, exp: 0,   gold: 0,   emoji: '👿', isBoss: true, usesPoison: true },
-  // 裏ボス
-  '深淵の魔神':      { lv: 90, hp: 3000, atk: 330, def: 80, exp: 0,   gold: 0,   emoji: '🌑', isBoss: true, isSecretBoss: true, usesPoison: true },
+  // 平原 (LV1-9)
+  'スライム':        { lv: 1,  hp: 12,   atk: 12,  def: 3,  exp: 4,   gold: 2,   emoji: '🟣' },
+  'ドラキー':        { lv: 3,  hp: 22,   atk: 20,  def: 5,  exp: 9,   gold: 5,   emoji: '🦇' },
+  'おおありくい':    { lv: 5,  hp: 38,   atk: 30,  def: 8,  exp: 15,  gold: 8,   emoji: '🐜' },
+  'キメラ':          { lv: 7,  hp: 55,   atk: 42,  def: 12, exp: 22,  gold: 12,  emoji: '🦅' },
+  'リザードマン':    { lv: 9,  hp: 72,   atk: 56,  def: 16, exp: 30,  gold: 16,  emoji: '🦎' },
+  // 平原 中ボス (LV8-10推奨)
+  'ゴーレム':        { lv: 12, hp: 320,  atk: 88,  def: 32, exp: 110, gold: 65,  emoji: '🗿', isMidBoss: true },
+  // 暗黒洞窟 (LV12-24)
+  'メタルスライム':  { lv: 15, hp: 6,    atk: 30,  def: 120,exp: 80,  gold: 40,  emoji: '⚪' },
+  'オーク':          { lv: 12, hp: 82,   atk: 58,  def: 18, exp: 30,  gold: 18,  emoji: '👹' },
+  'スライムベス':    { lv: 14, hp: 92,   atk: 54,  def: 20, exp: 35,  gold: 20,  emoji: '🟢', usesPoison: true },
+  'トロル':          { lv: 16, hp: 118,  atk: 72,  def: 24, exp: 46,  gold: 27,  emoji: '👺' },
+  'ポイズントード':  { lv: 18, hp: 108,  def: 23,  atk: 68, exp: 42,  gold: 25,  emoji: '🐸', usesPoison: true },
+  'スカルナイト':    { lv: 20, hp: 132,  atk: 82,  def: 30, exp: 55,  gold: 34,  emoji: '⚔️' },
+  'アンデッド':      { lv: 24, hp: 162,  atk: 98,  def: 36, exp: 72,  gold: 45,  emoji: '🧟' },
+  // 暗黒洞窟 中ボス (LV18-22推奨)
+  'ボストロール':    { lv: 28, hp: 620,  atk: 165, def: 52, exp: 180, gold: 105, emoji: '👾', isMidBoss: true },
+  // 魔王の城 (LV28-44)
+  'デスナイト':      { lv: 28, hp: 168,  atk: 102, def: 40, exp: 85,  gold: 52,  emoji: '💀' },
+  'キラーマシン':    { lv: 32, hp: 202,  atk: 118, def: 48, exp: 110, gold: 68,  emoji: '🤖' },
+  'デスバイパー':    { lv: 34, hp: 185,  atk: 110, def: 44, exp: 98,  gold: 60,  emoji: '🐍', usesPoison: true },
+  'ドラゴン':        { lv: 36, hp: 235,  atk: 128, def: 54, exp: 132, gold: 78,  emoji: '🐉' },
+  'ダースドラゴン':  { lv: 42, hp: 288,  atk: 148, def: 65, exp: 158, gold: 96,  emoji: '🔥' },
+  'キングサーペント':{ lv: 44, hp: 268,  atk: 142, def: 60, exp: 145, gold: 90,  emoji: '🦂', usesPoison: true },
+  // メタル系 (確定遭遇専用)
+  'メタルキング':    { lv: 50, hp: 10,   atk: 75,  def: 255,exp: 800, gold: 300, emoji: '👑' },
+  // ラスボス (LV20前後+炎の剣装備で撃破可能)
+  '魔王ゾーマ':      { lv: 60, hp: 750,  atk: 165, def: 58, exp: 0,   gold: 0,   emoji: '👿', isBoss: true, usesPoison: true },
+  // 裏ボス (LV90前後+ロト装備推奨)
+  '深淵の魔神':      { lv: 90, hp: 6000, atk: 420, def: 130,exp: 0,   gold: 0,   emoji: '🌑', isBoss: true, isSecretBoss: true, usesPoison: true },
 };
 
 const AREAS = [
@@ -133,10 +133,10 @@ let brokeInnCount = 0;
 
 function newPlayer() {
   return {
-    hp: 35, maxHp: 35,
-    mp: 12, maxMp: 12,
+    hp: 45, maxHp: 45,
+    mp: 15, maxMp: 15,
     lv: 1, exp: 0, gold: 60,
-    atk: 14, def: 6,
+    atk: 16, def: 8,
     items: [{ name: 'やくそう', n: 2 }],
     spells: [],
     equipped: { weapon: '木の棒', armor: '布の服', shield: null },
@@ -220,7 +220,7 @@ function checkLevelUp() {
   const msgs = [];
   while (player.lv < 99 && player.exp >= EXP_TABLE[player.lv + 1]) {
     player.lv++;
-    const hg = 8 + rand(6), mg = 3 + rand(3), ag = 2 + rand(3), dg = 1 + rand(2);
+    const hg = 10 + rand(8), mg = 4 + rand(4), ag = 3 + rand(3), dg = 2 + rand(2);
     player.maxHp += hg; player.hp = Math.min(player.hp + hg, player.maxHp);
     player.maxMp += mg; player.mp = Math.min(player.mp + mg, player.maxMp);
     player.atk += ag; player.def += dg;
@@ -240,7 +240,7 @@ function checkLevelUp() {
 function maxOutStats() {
   player.maxHp = 999; player.hp = 999;
   player.maxMp = 999; player.mp = 999;
-  player.atk = 250; player.def = 120;
+  player.atk = 450; player.def = 180;
   player.lv = 99; player.exp = EXP_TABLE[99];
   player.gold += 99999;
   player.spells = Object.keys(SPELLS);
@@ -519,7 +519,7 @@ function doSpell(name) {
   player.mp -= s.mp;
   updateBattleUI();
   if (s.type === 'heal') {
-    const h = s.power + rand(15);
+    const h = Math.floor(s.power + player.lv * 1.5) + rand(20);
     player.hp = Math.min(player.maxHp, player.hp + h);
     updateBattleUI();
     typeMsg(`${name}！　HPが　${h}　かいふくした！`, () => enemyTurn());
@@ -702,17 +702,16 @@ function setExploreCmds() {
   renderCmds('explore-cmd-list');
 }
 
-// ===== 出現敵を選択 =====
+// ===== 出現敵を選択（全エリア重み付き） =====
 function pickEnemy(area, playerLv) {
-  const monsters = AREAS[area].monsters;
+  let monsters = AREAS[area].monsters;
   if (area === 0) {
-    // 平原: プレイヤーLVより3以上低い敵は出現しない
+    // 平原: プレイヤーLVより3以上低い敵はプールから除外
     const eligible = monsters.filter(m => MONSTERS[m].lv >= playerLv - 2);
-    const pool = eligible.length ? eligible : [monsters[monsters.length - 1]];
-    return pool[rand(pool.length)];
+    monsters = eligible.length ? eligible : [monsters[monsters.length - 1]];
   }
-  // 暗黒洞窟・魔王の城: レベルが近いほど高確率で出現
-  const weights = monsters.map(m => Math.max(1, 10 - Math.abs(MONSTERS[m].lv - playerLv)));
+  // 全エリア共通: レベル差が小さいほど高確率 (差0→11pt, 差5→6pt, 差10+→1pt)
+  const weights = monsters.map(m => Math.max(1, 11 - Math.abs(MONSTERS[m].lv - playerLv)));
   const total = weights.reduce((s, w) => s + w, 0);
   let r = rand(total);
   for (let i = 0; i < monsters.length; i++) {
@@ -763,11 +762,6 @@ function doWalk() {
       typeMsg('幸運の粉が　かがやいた！\nメタルスライムが　あらわれた！', () => startBattle('メタルスライム'));
       return;
     }
-    // 暗黒洞窟: 5回に1回メタルスライムが出現
-    if (rand(5) === 0) {
-      typeMsg('なにかが　ひかっている！\nメタルスライムが　あらわれた！', () => startBattle('メタルスライム'));
-      return;
-    }
   } else if (player.area === 2) {
     // 魔王の城: 幸運の粉7個 → メタルキング確定
     const luckInv = player.items.find(i => i.name === '幸運の粉');
@@ -779,6 +773,11 @@ function doWalk() {
   }
 
   if (Math.random() < 0.65) {
+    // 暗黒洞窟: エンカウントの5回に1回はメタルスライム
+    if (player.area === 1 && rand(5) === 0) {
+      typeMsg('なにかが　ひかっている！\nメタルスライムが　あらわれた！', () => startBattle('メタルスライム'));
+      return;
+    }
     const m = pickEnemy(player.area, player.lv);
     typeMsg(`${m}に　であった！`, () => startBattle(m));
   } else {
