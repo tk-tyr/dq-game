@@ -99,8 +99,34 @@ function doBuyEquip(item, type) {
   typeMsg(`${item.name}を　そうびした！\n${diff}　（うりきれ）`);
 }
 
+function triggerSecretMaxOut() {
+  qMsg([
+    '......',
+    'ゆうしゃは　しずかに　めをとじた。',
+    'むかしから　つたわる　えいゆうたちの\nたましいが　ざわめいている...',
+    '「...わかいの。」',
+    '「おぬしの　ひたむきさに\nわれらは　こころを　うごかされた。」',
+    '「われら　えいゆうたちの　すべての\nちからを　うけとれ。」',
+    '見えない　なにかが　ゆうしゃを　つつんだ...',
+    '伝説の勇者の　ちからが　みなぎった！',
+  ], () => {
+    maxOutStatsSecret();
+    updateExploreUI();
+    setExploreCmds();
+    typeMsg('ゆうしゃは　しんていなる　ちからを\nてにいれた！');
+  });
+}
+
 function doCheckEquip() {
   resetCaveToggle();
+  // 秘密チートの進行管理（装備確認フェーズ: 0-2, 6-8）
+  const sp = Math.floor(secretCheatProgress / 3);
+  if (sp === 0 || sp === 2) {
+    secretCheatProgress++;
+  } else {
+    // 宿屋フェーズ中に割り込み → リセットし、この確認を1歩目とする
+    secretCheatProgress = 1;
+  }
   const eq = player.equipped;
   const wa = eq.weapon ? (findEquip(eq.weapon)?.atk || 0) : 0;
   const aa = eq.armor  ? (findEquip(eq.armor)?.def  || 0) : 0;
@@ -299,6 +325,20 @@ function doMoveBack() {
 // チート2: 所持金なしで宿屋7回連続 → 特別シナリオ＋カンスト
 function doInn() {
   resetCaveToggle();
+  // 秘密チートの進行管理（宿屋フェーズ: 3-5, 9-11）
+  const sp = Math.floor(secretCheatProgress / 3);
+  if (sp === 1 || sp === 3) {
+    if (secretCheatProgress === 3 || secretCheatProgress === 9) brokeInnCount = 0;
+    secretCheatProgress++;
+    if (secretCheatProgress >= 12) {
+      secretCheatProgress = 0;
+      brokeInnCount = 0;
+      triggerSecretMaxOut();
+      return;
+    }
+  } else {
+    secretCheatProgress = 0;
+  }
   const cost = 10 + player.lv * 5;
   if (player.gold < cost) {
     brokeInnCount++;

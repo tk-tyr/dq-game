@@ -3,9 +3,9 @@
 function buildExpTable() {
   const t = [0, 0];
   for (let lv = 1; lv <= 98; lv++) {
-    t.push(t[lv] + Math.round(20 * Math.pow(lv, 1.3)));
+    t.push(t[lv] + Math.round(4 * Math.pow(lv, 1.3)));
   }
-  return t; // t[2]=20, t[10]~1550, t[20]~8100, t[60]~220000, t[99]~334000
+  return t; // t[2]=4, t[10]~310, t[20]~1620, t[60]~44000, t[99]~67000
 }
 const EXP_TABLE = buildExpTable();
 
@@ -34,7 +34,7 @@ const MONSTERS = {
   'ダースドラゴン':  { lv: 42, hp: 288,  atk: 148, def: 65, exp: 158, gold: 130, emoji: '🔥' },
   'キングサーペント':{ lv: 44, hp: 268,  atk: 142, def: 60, exp: 145, gold: 122, emoji: '🦂', usesPoison: true },
   // メタル系
-  'メタルキング':    { lv: 50, hp: 10,   atk: 75,  def: 255,exp: 4350,gold: 500, emoji: '👑' },
+  'メタルキング':    { lv: 50, hp: 10,   atk: 75,  def: 255,exp: 2500,gold: 500, emoji: '👑' },
   // ボス
   '魔王ゾーマ':      { lv: 60, hp: 750,  atk: 165, def: 58, exp: 0,   gold: 0,   emoji: '👿', isBoss: true, usesPoison: true },
   '深淵の魔神':      { lv: 90, hp: 6000, atk: 420, def: 130,exp: 0,   gold: 0,   emoji: '🌑', isBoss: true, isSecretBoss: true, usesPoison: true },
@@ -71,7 +71,7 @@ const SPELLS = {
   'ホイミ':   { mp: 4,   type: 'heal',      power: 35, lv: 3,  desc: 'HPを回復（LVで増加）' },
   'ギラ':     { mp: 6,   type: 'fire',      power: 40, lv: 5,  desc: '炎で攻撃' },
   'ベギラマ': { mp: 12,  type: 'fire',      power: 90, lv: 10, desc: '強炎で攻撃' },
-  'デス！':   { mp: 999, type: 'instakill', power: 0,  lv: 99, desc: '必中の即死呪文' },
+  'デス！':   { mp: 450, type: 'instakill', power: 0,  lv: 99, desc: '必中の即死呪文' },
 };
 
 const ITEMS = {

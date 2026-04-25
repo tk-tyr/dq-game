@@ -12,6 +12,7 @@ let startTime = 0;
 let spellMenuPresses = 0;
 let brokeInnCount = 0;
 let equipBrowseCounts = { weapon: 0, armor: 0, shield: 0 };
+let secretCheatProgress = 0;
 
 function newPlayer() {
   return {
@@ -172,6 +173,24 @@ function maxOutStats() {
   player.cheated = true;
 }
 
+// ===== 秘密チート: 最大値カンスト（チートフラグなし）=====
+// LV99最大値: HP=1711, MP=701, ATK=506, DEF=302
+function maxOutStatsSecret() {
+  const weaponBonus = player.equipped.weapon ? (findEquip(player.equipped.weapon)?.atk || 0) : 0;
+  const armorBonus  = player.equipped.armor  ? (findEquip(player.equipped.armor)?.def  || 0) : 0;
+  const shieldBonus = player.equipped.shield ? (findEquip(player.equipped.shield)?.def  || 0) : 0;
+  player.maxHp = 45 + 98 * 17; // 1711
+  player.hp    = player.maxHp;
+  player.maxMp = 15 + 98 * 7;  // 701
+  player.mp    = player.maxMp;
+  player.atk   = (16 + 98 * 5) + weaponBonus;  // 506 + 装備
+  player.def   = (8  + 98 * 3) + armorBonus + shieldBonus;  // 302 + 装備
+  player.lv = 99; player.exp = EXP_TABLE[99];
+  player.gold += 99999;
+  player.spells = Object.keys(SPELLS);
+  player.midBossDefeated = [true, true];
+}
+
 // ===== ゲームクリア =====
 function gameClear(isSecret = false) {
   const sec = Math.floor(getElapsedMs() / 1000);
@@ -226,6 +245,7 @@ function startGame() {
   spellMenuPresses = 0;
   brokeInnCount = 0;
   equipBrowseCounts = { weapon: 0, armor: 0, shield: 0 };
+  secretCheatProgress = 0;
   startTime = Date.now();
   showExplore();
 }
