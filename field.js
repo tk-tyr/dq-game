@@ -244,8 +244,8 @@ function doWalk() {
     const hasRotoEquip = player.equipped.weapon === 'ロトの剣' &&
                          player.equipped.armor  === 'ロトの鎧' &&
                          player.equipped.shield === 'ロトの盾';
-    if ((yaku >= 7 && doku >= 7 && luck >= 7 && hasRotoEquip) || player.fieldEncounters >= 24) {
-      if (player.fieldEncounters >= 24) player.fieldEncounters = 0;
+    if ((yaku >= 7 && doku >= 7 && luck >= 7 && hasRotoEquip) || player.fieldEncounters >= 77) {
+      if (player.fieldEncounters >= 77) player.fieldEncounters = 0;
       typeMsg('大地が　ふるえた...\n深淵の魔神が　あらわれた！', () => startBattle('深淵の魔神'));
       return;
     }

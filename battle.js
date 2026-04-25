@@ -136,7 +136,7 @@ function doSpell(name) {
   player.mp -= s.mp;
   updateBattleUI();
   if (s.type === 'heal') {
-    const h = Math.floor(s.power + player.lv * 1.5) + rand(20);
+    const h = Math.floor(s.power + player.lv * 2.0) + rand(20);
     player.hp = Math.min(player.maxHp, player.hp + h);
     updateBattleUI();
     typeMsg(`${name}！　HPが　${h}　かいふくした！`, () => enemyTurn());

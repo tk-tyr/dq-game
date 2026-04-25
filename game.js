@@ -18,9 +18,9 @@ function newPlayer() {
   return {
     hp: 45, maxHp: 45,
     mp: 15, maxMp: 15,
-    lv: 1, exp: 0, gold: 60,
+    lv: 1, exp: 0, gold: 77,
     atk: 16, def: 8,
-    items: [{ name: 'やくそう', n: 2 }],
+    items: [{ name: 'やくそう', n: 3 }],
     spells: [],
     equipped: { weapon: '木の棒', armor: '布の服', shield: null },
     soldOut: { weapon: [], armor: [], shield: [] },
