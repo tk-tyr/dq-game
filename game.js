@@ -32,6 +32,7 @@ function newPlayer() {
     bonusTime: 0,
     cheated: false,
     poisoned: false,
+    brokeCheatUsed: false,
   };
 }
 

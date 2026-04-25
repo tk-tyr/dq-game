@@ -19,6 +19,8 @@ function equipItem(item) {
 
 function doEquipShop() {
   resetCaveToggle();
+  brokeInnCount = 0;
+  secretCheatProgress = 0;
   const eq = player.equipped;
   cmds = [
     { label: '武器を　かう', fn: () => doEquipCategory('weapon') },
@@ -119,13 +121,13 @@ function triggerSecretMaxOut() {
 
 function doCheckEquip() {
   resetCaveToggle();
-  // 秘密チートの進行管理（装備確認フェーズ: 0-2, 6-8）
-  const sp = Math.floor(secretCheatProgress / 3);
-  if (sp === 0 || sp === 2) {
+  brokeInnCount = 0;
+  // 秘密チート: 装備確認が有効な位置は 0,1,2,6 のみ
+  if (secretCheatProgress === 0 || secretCheatProgress === 1 ||
+      secretCheatProgress === 2 || secretCheatProgress === 6) {
     secretCheatProgress++;
   } else {
-    // 宿屋フェーズ中に割り込み → リセットし、この確認を1歩目とする
-    secretCheatProgress = 1;
+    secretCheatProgress = 0;
   }
   const eq = player.equipped;
   const wa = eq.weapon ? (findEquip(eq.weapon)?.atk || 0) : 0;
@@ -219,6 +221,8 @@ function pickEnemy(area, playerLv) {
 
 function doWalk() {
   resetCaveToggle();
+  brokeInnCount = 0;
+  secretCheatProgress = 0;
 
   if (player.poisoned) {
     const dmg = Math.max(1, Math.floor(player.maxHp * 0.03));
@@ -293,6 +297,8 @@ function handleCaveToggle(from, to) {
 }
 
 function doMove() {
+  brokeInnCount = 0;
+  secretCheatProgress = 0;
   const a = AREAS[player.area];
   if (a.nextArea === null) return;
   if (a.midBoss && !player.midBossDefeated[a.midBossIdx]) {
@@ -310,6 +316,8 @@ function doMove() {
 }
 
 function doMoveBack() {
+  brokeInnCount = 0;
+  secretCheatProgress = 0;
   const a = AREAS[player.area];
   if (a.prevArea === undefined) return;
   const from = player.area;
@@ -322,49 +330,62 @@ function doMoveBack() {
   }
 }
 
-// チート2: 所持金なしで宿屋7回連続 → 特別シナリオ＋カンスト
+// チート2: 所持金なしで宿屋7回連続 → 特別シナリオ＋カンスト（1回限り）
 function doInn() {
   resetCaveToggle();
-  // 秘密チートの進行管理（宿屋フェーズ: 3-5, 9-11）
-  const sp = Math.floor(secretCheatProgress / 3);
-  if (sp === 1 || sp === 3) {
-    if (secretCheatProgress === 3 || secretCheatProgress === 9) brokeInnCount = 0;
+  const cost = 10 + player.lv * 5;
+
+  if (player.gold < cost) {
+    // 金不足: 秘密チートをリセット
+    secretCheatProgress = 0;
+    // 宿屋チート弱（1回限り・他コマンドでリセット済みが前提）
+    if (!player.brokeCheatUsed) {
+      brokeInnCount++;
+      if (brokeInnCount >= 7) {
+        brokeInnCount = 0;
+        player.brokeCheatUsed = true;
+        qMsg([
+          `おカネが　たりない！（${cost}G　ひつよう）`,
+          '....',
+          'ん？　うしろに　だれかが　いる...',
+          '「わかものよ。\nそんなに　くるしいのかい？」',
+          '白いひげの　ろうじんが　あらわれた。',
+          '「わしは　この　くにの　まほうつかいじゃ。」',
+          '「おぬしの　ゆうかんさを　みていたよ。」',
+          '「このちからを　うけとりなさい！」',
+          '★★★　ステータスが　カンストした！　★★★',
+        ], () => {
+          maxOutStats();
+          updateExploreUI();
+          setExploreCmds();
+          typeMsg('ゆうしゃの　ちからが　かんせいした！\n（チート使用が　きろくされました）');
+        });
+        return;
+      }
+    }
+    typeMsg(`おカネが　たりない！（${cost}G　ひつよう）`);
+    return;
+  }
+
+  // 金あり: 秘密チート進行（宿屋フェーズ: progress 3,4,5,7）
+  if (secretCheatProgress === 3 || secretCheatProgress === 4 ||
+      secretCheatProgress === 5 || secretCheatProgress === 7) {
     secretCheatProgress++;
-    if (secretCheatProgress >= 12) {
+    if (secretCheatProgress === 8) {
       secretCheatProgress = 0;
       brokeInnCount = 0;
+      player.gold -= cost;
+      player.hp = player.maxHp;
+      player.mp = player.maxMp;
+      player.poisoned = false;
+      updateExploreUI();
       triggerSecretMaxOut();
       return;
     }
   } else {
     secretCheatProgress = 0;
   }
-  const cost = 10 + player.lv * 5;
-  if (player.gold < cost) {
-    brokeInnCount++;
-    if (brokeInnCount >= 7) {
-      brokeInnCount = 0;
-      qMsg([
-        `おカネが　たりない！（${cost}G　ひつよう）`,
-        '....',
-        'ん？　うしろに　だれかが　いる...',
-        '「わかものよ。\nそんなに　くるしいのかい？」',
-        '白いひげの　ろうじんが　あらわれた。',
-        '「わしは　この　くにの　まほうつかいじゃ。」',
-        '「おぬしの　ゆうかんさを　みていたよ。」',
-        '「このちからを　うけとりなさい！」',
-        '★★★　ステータスが　カンストした！　★★★',
-      ], () => {
-        maxOutStats();
-        updateExploreUI();
-        setExploreCmds();
-        typeMsg('ゆうしゃの　ちからが　かんせいした！\n（チート使用が　きろくされました）');
-      });
-      return;
-    }
-    typeMsg(`おカネが　たりない！（${cost}G　ひつよう）`);
-    return;
-  }
+
   brokeInnCount = 0;
   player.gold -= cost;
   player.hp = player.maxHp;
@@ -377,6 +398,8 @@ function doInn() {
 
 function doFieldItems() {
   resetCaveToggle();
+  brokeInnCount = 0;
+  secretCheatProgress = 0;
   const usable = player.items.filter(i => i.n > 0 && ['heal', 'cure'].includes(ITEMS[i.name]?.type));
   if (!usable.length) {
     typeMsg('つかえるどうぐが　ない。');
@@ -411,6 +434,8 @@ function doFieldUseItem(name) {
 
 function doShop() {
   resetCaveToggle();
+  brokeInnCount = 0;
+  secretCheatProgress = 0;
   const stock = SHOP_BY_AREA[player.area];
   cmds = stock.map(name => ({
     label: `${name}（${ITEMS[name].buy}G）　${ITEMS[name].desc}`,
@@ -435,5 +460,7 @@ function doBuy(name) {
 
 function doBoss() {
   resetCaveToggle();
+  brokeInnCount = 0;
+  secretCheatProgress = 0;
   typeMsg('魔王ゾーマの　もとへ　むかう...', () => startBattle('魔王ゾーマ'));
 }
